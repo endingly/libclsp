@@ -16,6 +16,8 @@
 
 cmake_minimum_required(VERSION 3.13.0)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
 project(libclsp
 	VERSION 0.1.3
 	DESCRIPTION "A language server protocol C++ library"
@@ -30,20 +32,24 @@ include(GNUInstallDirs)
 include(FindPkgConfig)
 
 # The library itself
-add_library(${PROJECT_NAME} SHARED)
+add_library(${PROJECT_NAME})
 
 # Version for the library symlinks
 set_target_properties(${PROJECT_NAME}
 	PROPERTIES
 		VERSION ${PROJECT_VERSION}
 		SOVERSION ${PROJECT_VERSION_MAJOR}
-		PREFIX ""
+		DEBUG_POSTFIX "_d"
 		CXX_STANDARD 17
+		OUTPUT_NAME "clsp"
 )
 
 # Headers
-target_include_directories(${PROJECT_NAME}
-	PRIVATE ${PROJECT_SOURCE_DIR}/include
+target_include_directories(
+	${PROJECT_NAME}
+	PUBLIC
+	$<INSTALL_INTERFACE:include>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
 
 # Sources list
@@ -86,7 +92,4 @@ if(NOT DEFINED ENV{CXXFLAGS})
 	set(CMAKE_CXX_FLAGS "-Wall -Wextra -g -Wl,-z,defs")
 endif()
 
-
-install(TARGETS ${PROJECT_NAME}
-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+include(install)

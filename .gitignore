@@ -52,4 +52,6 @@ _deps
 *-prefix/
 
 build/
+.vscode
+.cache
 
