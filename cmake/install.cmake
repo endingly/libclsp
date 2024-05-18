@@ -1,6 +1,8 @@
 install(
     TARGETS ${PROJECT_NAME}
     EXPORT "${PROJECT_NAME}Targets"
+    LIBRARY DESTINATION bin
+    ARCHIVE DESTINATION lib
     PUBLIC_HEADER DESTINATION "include/libclsp"
 )
 
